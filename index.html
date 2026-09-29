@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="FitCalc helps you calculate BMI, daily calorie needs, track food intake, and manage nutrition goals with a modern, responsive dashboard."
+    />
+    <title>FitCalc – BMI & Calorie Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="navbar container" aria-label="Main navigation">
+        <a href="#home" class="brand" aria-label="FitCalc home">
+          <span class="brand-mark">F</span>
+          <span>FitCalc</span>
+        </a>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="nav-menu">
+          <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#bmi-calculator">BMI</a></li>
+            <li><a href="#calorie-calculator">Calories</a></li>
+            <li><a href="#food-calorie-database">Foods</a></li>
+            <li><a href="#calorie-tracker">Tracker</a></li>
+            <li><a href="#about">About</a></li>
+          </ul>
+          <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">
+            <span class="theme-icon">🌙</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section id="home" class="hero section">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <span class="eyebrow">Health & fitness dashboard</span>
+            <h1>Smart calculations for a healthier lifestyle.</h1>
+            <p>
+              Measure your body, estimate your daily calorie needs, and track food intake with
+              effective, easy-to-follow health tools built for real life.
+            </p>
+            <div class="hero-actions">
+              <a href="#bmi-calculator" class="btn btn-primary">Calculate BMI</a>
+              <a href="#calorie-tracker" class="btn btn-secondary">Track Food</a>
+            </div>
+            <ul class="hero-points" aria-label="Health features">
+              <li>Body metrics</li>
+              <li>Calorie planning</li>
+              <li>Food database</li>
+            </ul>
+          </div>
+
+          <div class="hero-card card" aria-label="Summary preview">
+            <div class="mini-chart">
+              <div class="ring ring-large">
+                <div class="ring-inner">
+                  <span>FitCalc</span>
+                </div>
+              </div>
+            </div>
+            <div class="quick-stats">
+              <div>
+                <span class="stat-label">Target</span>
+                <strong id="hero-target">2000 kcal</strong>
+              </div>
+              <div>
+                <span class="stat-label">Consumed</span>
+                <strong id="hero-consumed">0 kcal</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section dashboard-section">
+        <div class="container">
+          <div class="section-header">
+            <p class="section-tag">Dashboard</p>
+            <h2>Summary at a glance</h2>
+          </div>
+
+          <div class="summary-grid">
+            <article class="summary-card card">
+              <span class="summary-label">BMI</span>
+              <strong id="dashboard-bmi">--</strong>
+            </article>
+            <article class="summary-card card">
+              <span class="summary-label">BMI Category</span>
+              <strong id="dashboard-category">--</strong>
+            </article>
+            <article class="summary-card card">
+              <span class="summary-label">BMR</span>
+              <strong id="dashboard-bmr">--</strong>
+            </article>
+            <article class="summary-card card">
+              <span class="summary-label">Daily Requirement</span>
+              <strong id="dashboard-requirement">--</strong>
+            </article>
+            <article class="summary-card card">
+              <span class="summary-label">Calories Consumed</span>
+              <strong id="dashboard-consumed">--</strong>
+            </article>
+            <article class="summary-card card">
+              <span class="summary-label">Calories Remaining</span>
+              <strong id="dashboard-remaining">--</strong>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="bmi-calculator" class="section calculator-section">
+        <div class="container">
+          <div class="section-header">
+            <p class="section-tag">BMI Calculator</p>
+            <h2>Check your body mass index</h2>
+          </div>
+
+          <div class="calculator-layout">
+            <form id="bmi-form" class="card form-card" novalidate>
+              <div class="field-grid two-column">
+                <div class="field-group">
+                  <label for="bmi-age">Age</label>
+                  <input id="bmi-age" name="bmi-age" type="number" min="13" max="100" placeholder="e.g. 28" />
+                </div>
+
+                <div class="field-group gender-group" aria-label="Gender selection">
+                  <span class="input-label">Gender</span>
+                  <div class="radio-group">
+                    <label>
+                      <input type="radio" name="bmi-gender" value="male" checked />
+                      <span>Male</span>
+                    </label>
+                    <label>
+                      <input type="radio" name="bmi-gender" value="female" />
+                      <span>Female</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field-grid two-column">
+                <div class="field-group">
+                  <label for="bmi-height">Height (cm)</label>
+                  <input id="bmi-height" name="bmi-height" type="number" min="100" max="250" placeholder="e.g. 170" />
+                </div>
+
+                <div class="field-group">
+                  <label for="bmi-weight">Weight (kg)</label>
+                  <input id="bmi-weight" name="bmi-weight" type="number" min="20" max="300" placeholder="e.g. 68" />
+                </div>
+              </div>
+
+              <div id="bmi-error" class="form-error" aria-live="polite"></div>
+
+              <div class="button-row">
+                <button type="submit" class="btn btn-primary" id="bmi-calc-btn">Calculate BMI</button>
+                <button type="button" class="btn btn-secondary" id="bmi-reset-btn">Reset</button>
+              </div>
+            </form>
+
+            <aside class="card result-card" aria-live="polite">
+              <div class="result-header">
+                <h3>Your BMI</h3>
+                <span id="bmi-status-badge" class="status-badge neutral">Not calculated</span>
+              </div>
+
+              <div class="bmi-score-wrap">
+                <div class="bmi-score" id="bmi-score">--</div>
+              </div>
+
+              <div class="bmi-progress">
+                <div id="bmi-progress-fill" class="bmi-progress-fill" aria-label="BMI progress"></div>
+              </div>
+
+              <div class="result-bonuses">
+                <div>
+                  <span class="muted">Category</span>
+                  <strong id="bmi-category">--</strong>
+                </div>
+                <div>
+                  <span class="muted">Range</span>
+                  <strong id="bmi-range">--</strong>
+                </div>
+              </div>
+
+              <p id="bmi-explanation" class="result-text">
+                Enter your details to see your BMI summary and category.
+              </p>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section id="calorie-calculator" class="section calculator-section alt-bg">
+        <div class="container">
+          <div class="section-header">
+            <p class="section-tag">Daily Calorie Calculator</p>
+            <h2>Estimate your calorie needs</h2>
+          </div>
+
+          <div class="calculator-layout">
+            <form id="calorie-form" class="card form-card" novalidate>
+              <div class="field-grid two-column">
+                <div class="field-group">
+                  <label for="calorie-age">Age</label>
+                  <input id="calorie-age" type="number" min="13" max="100" placeholder="e.g. 30" />
+                </div>
+
+                <div class="field-group gender-group" aria-label="Gender selection">
+                  <span class="input-label">Gender</span>
+                  <div class="radio-group">
+                    <label>
+                      <input type="radio" name="calorie-gender" value="male" checked />
+                      <span>Male</span>
+                    </label>
+                    <label>
+                      <input type="radio" name="calorie-gender" value="female" />
+                      <span>Female</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field-grid two-column">
+                <div class="field-group">
+                  <label for="calorie-height">Height (cm)</label>
+                  <input id="calorie-height" type="number" min="100" max="250" placeholder="e.g. 175" />
+                </div>
+
+                <div class="field-group">
+                  <label for="calorie-weight">Weight (kg)</label>
+                  <input id="calorie-weight" type="number" min="20" max="300" placeholder="e.g. 70" />
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="activity-level">Activity level</label>
+                <select id="activity-level">
+                  <option value="1.2">Sedentary</option>
+                  <option value="1.375">Lightly Active</option>
+                  <option value="1.55">Moderately Active</option>
+                  <option value="1.725">Very Active</option>
+                  <option value="1.9">Extra Active</option>
+                </select>
+              </div>
+
+              <div id="calorie-error" class="form-error" aria-live="polite"></div>
+
+              <div class="button-row">
+                <button type="submit" class="btn btn-primary" id="calorie-calc-btn">Calculate Calories</button>
+                <button type="button" class="btn btn-secondary" id="calorie-reset-btn">Reset</button>
+              </div>
+            </form>
+
+            <aside class="card result-card" aria-live="polite">
+              <div class="result-header">
+                <h3>Estimated Calories</h3>
+                <span class="status-badge info">Estimates</span>
+              </div>
+
+              <div class="result-grid-calories">
+                <div class="mini-result">
+                  <span>BMR</span>
+                  <strong id="bmr-result">-- kcal</strong>
+                </div>
+                <div class="mini-result">
+                  <span>Maintenance</span>
+                  <strong id="maintenance-result">-- kcal</strong>
+                </div>
+                <div class="mini-result accent-success">
+                  <span>Loss</span>
+                  <strong id="loss-result">-- kcal</strong>
+                </div>
+                <div class="mini-result accent-warning">
+                  <span>Gain</span>
+                  <strong id="gain-result">-- kcal</strong>
+                </div>
+              </div>
+
+              <p class="result-text">
+                Weight loss is estimated as maintenance minus 500 kcal. Weight gain is estimated as maintenance plus 300 kcal.
+              </p>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section id="food-calorie-database" class="section">
+        <div class="container">
+          <div class="section-header">
+            <p class="section-tag">Food Calorie Database</p>
+            <h2>Common foods and nutrients</h2>
+          </div>
+
+          <div class="food-controls card">
+            <div class="field-group search-field">
+              <label for="food-search">Search food</label>
+              <input id="food-search" type="search" placeholder="Search rice, banana, paneer..." />
+            </div>
+
+            <div class="field-group">
+              <label for="food-category">Category filter</label>
+              <select id="food-category">
+                <option value="all">All categories</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="food-sort">Sort by</label>
+              <select id="food-sort">
+                <option value="name">Name</option>
+                <option value="calories-desc">Calories: High to Low</option>
+                <option value="calories-asc">Calories: Low to High</option>
+                <option value="protein-desc">Protein: High to Low</option>
+                <option value="protein-asc">Protein: Low to High</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-wrap card">
+            <table aria-label="Food database table">
+              <thead>
+                <tr>
+                  <th>Food</th>
+                  <th>Calories / 100g</th>
+                  <th>Protein</th>
+                  <th>Carbs</th>
+                  <th>Fat</th>
+                  <th>Category</th>
+                </tr>
+              </thead>
+              <tbody id="food-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="calorie-tracker" class="section tracker-section alt-bg">
+        <div class="container">
+          <div class="section-header">
+            <p class="section-tag">Calorie Tracker</p>
+            <h2>Log today's food intake</h2>
+          </div>
+
+          <div class="tracker-layout">
+            <div class="card form-card">
+              <div class="field-group">
+                <label for="tracker-food">Select or search food</label>
+                <input id="tracker-food" list="food-options" placeholder="Choose a food" />
+                <datalist id="food-options"></datalist>
+              </div>
+
+              <div class="field-grid two-column">
+                <div class="field-group">
+                  <label for="tracker-quantity">Quantity (grams)</label>
+                  <input id="tracker-quantity" type="number" min="1" step="1" placeholder="e.g. 200" />
+                </div>
+
+                <div class="field-group">
+                  <label for="daily-target">Target Calories</label>
+                  <input id="daily-target" type="number" min="1" step="10" value="2000" placeholder="2000" />
+                </div>
+              </div>
+
+              <div class="button-row">
+                <button type="button" id="add-food-btn" class="btn btn-primary">Add Food</button>
+                <button type="button" id="clear-food-btn" class="btn btn-secondary">Clear Today's Food</button>
+              </div>
+            </div>
+
+            <div class="card tracker-summary">
+              <div class="tracker-total-row">
+                <span>Consumed</span>
+                <strong id="tracker-total-calories">0 kcal</strong>
+              </div>
+              <div class="tracker-total-row">
+                <span>Target</span>
+                <strong id="tracker-target-calories">2000 kcal</strong>
+              </div>
+              <div class="tracker-total-row">
+                <span>Remaining</span>
+                <strong id="tracker-remaining-calories">2000 kcal</strong>
+              </div>
+
+              <div class="progress-wrap" aria-label="Daily calorie progress">
+                <div id="tracker-progress-bar" class="progress-bar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card tracker-list-card">
+            <div class="tracker-list-header">
+              <h3>Food log</h3>
+            </div>
+            <ul id="tracker-food-list" class="tracker-food-list" aria-live="polite"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section about-section">
+        <div class="container about-grid">
+          <div>
+            <p class="section-tag">About FitCalc</p>
+            <h2>Simple tools for healthier decisions.</h2>
+            <p>
+              FitCalc helps you estimate body metrics, understand your fuel needs, and track food intake using practical health formulas and common food nutrition values.
+            </p>
+          </div>
+
+          <div class="info-list card">
+            <ul>
+              <li>Clear BMI and calorie estimates</li>
+              <li>Nutrition-based food database</li>
+              <li>Daily tracking with local storage</li>
+              <li>Responsive design for all devices</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="container disclaimer-wrap">
+          <p class="disclaimer">
+            These calculations are estimates for general informational purposes and should not be considered medical advice. Individual calorie and nutritional needs can vary.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-content">
+        <div>
+          <a href="#home" class="brand footer-brand">
+            <span class="brand-mark">F</span>
+            <span>FitCalc</span>
+          </a>
+        </div>
+        <p>© 2026 FitCalc. Built for everyday wellness.</p>
+      </div>
+    </footer>
+
+    <button id="back-to-top" class="back-to-top" type="button" aria-label="Back to top">↑</button>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
